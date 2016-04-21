@@ -1,0 +1,6 @@
+[Desktop Entry]
+Comment=
+Terminal=false
+Name=PTymeKeeper
+Exec=python3 /home/jeff/Desktop/timeKeeper.py
+Type=Application
