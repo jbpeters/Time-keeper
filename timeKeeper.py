@@ -1,4 +1,5 @@
 #! /usr/bin/python3
+
 from tkinter import Tk,Button,Frame,Entry,BOTH,Toplevel
 import sys
 import time
@@ -65,7 +66,7 @@ class TimeClock(Frame):
         Datename = dt.datetime(1,1,1).now().strftime('%Y%m%d')
         my_Time = dt.timedelta(hours=g[3], minutes=g[4], seconds=g[5])
         #filename="C:\\Users\\jpeters\\Timer.log_"+Datename+"_TNS.csv"
-        filename="/home/jbp/Desktop/"+Datename+"_demo.csv"
+        filename="/home/jbp/Dropbox/Past_Rx/"+Datename+"_Past_Rx.csv"
         file =open(filename, 'a' )
         file.write(str(Datename))
         file.write(', ')
@@ -88,7 +89,7 @@ class TimeClock(Frame):
 
 if __name__ == "__main__":
     root = Tk()
-    root.title("foo")
+    root.title("TimeKeeper")
     holder= TimeClock(root,bg='purple') 
     holder.pack( expand='false', fill ='both')
     root.mainloop()
