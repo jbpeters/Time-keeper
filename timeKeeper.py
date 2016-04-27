@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 
-from tkinter import Tk,Button,Frame,Entry,BOTH,Toplevel
+from tkinter import *
+#Tk,Button,Frame,Entry,BOTH,Toplevel
 import sys
 import time
 import datetime as dt
@@ -90,6 +91,7 @@ class TimeClock(Frame):
 if __name__ == "__main__":
     root = Tk()
     root.title("TimeKeeper")
-    holder= TimeClock(root,bg='purple') 
-    holder.pack( expand='false', fill ='both')
+    root.iconphoto(True, PhotoImage(file="/home/jbp/Documents/myPythonStuff/tk-time/timeKeeper.png"))
+    frame= TimeClock(root,bg='purple') 
+    frame.pack( expand='false', fill ='both')
     root.mainloop()
