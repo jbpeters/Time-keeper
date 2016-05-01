@@ -11,10 +11,8 @@ import sys
 import time
 import datetime as dt
 
-#my_path="/home/jbp/Desktop/"
-#my_file="timekeeper"
-my_path="/home/jbp/Dropbox/Past_Rx/"
-my_file="Past_Rx"
+my_path=""
+my_file="timekeeper"
 
 
 class TimeClock(Frame):
@@ -24,38 +22,26 @@ class TimeClock(Frame):
         self.makebuttons()
         self.pack( expand='true', fill='x')
     
-    def multi_task(self, *m_tasks):
-        def tasks(*args, **kwargs):
-            for task in m_tasks:
-                task(*args, **kwargs)
-        return tasks
-    
     def makeentry(self):
-        self.e=Entry(self,text='Message',font=("times",16))
-        self.e.delete(0,"end")
-        self.e.pack(side='top')        
-        self.e.focus()
+        self.input = Entry(self,text='Message',font=("times",16))
+        self.input.delete(0,"end")
+        self.input.pack(side='top')        
+        self.input.focus()
 
     def makebuttons(self):
-        self.b1 = Button(self, text="Tock" ,font=("times",16),
+        self.b_restart = Button(self, text="Tock" ,font=("times",16),
                          bg='BLUE', activebackground="Blue",
                          activeforeground='White',fg='white',
                          height='2', width='8' , 
-                         command = self.multi_task( 
-                                                    self.write,
-                                                    self.makeentry
-                                                    )                                                   
-                         ) 
+                         command = self.write )
                          
-        self.b2 = Button(self, text="Tick", font=("times",16),
+        self.b_quit = Button(self, text="Tick", font=("times",16),
                          activebackground='red', bg='red', 
                          activeforeground='White',fg='white',
-                         command = self.multi_task( 
-                                                    self.quit 
-                                                    ) 
-                         )       
-        self.b1.pack(side='right', fill='both')
-        self.b2.pack(side='left', fill='both')
+                         command = self.quit )
+
+        self.b_restart.pack(side='right', fill='both')
+        self.b_quit.pack(side='left', fill='both')
         self.lastTime = ""
         self.start_timer()
 
@@ -69,38 +55,45 @@ class TimeClock(Frame):
                                                     
     def start_timer(self):
         def callback():
-            #self.message=self.e.delete(0,"end")
-            self.message=self.e.get()
-            print( "input text is equal to->",self.message)
-            root.title(self.message+":TIMER")
-            self.e.destroy()
-            self.B.destroy()            
-        self.B= Button(
+            self.message=self.input.get()
+            root.title(self.message+":TimeKeeper")
+            self.input.destroy()
+            self.b_start.destroy()
+            
+        self.b_start= Button(
                         self,
                         text='start', 
                         font=("times",16), 
                         command=callback)
-        self.B.pack()
+        self.b_start.pack()
         t=time.localtime()
         self.zeroTime = dt.timedelta(hours=t[3], minutes=t[4], seconds=t[5])
         self.tick()
         
     def tick(self):
         self.now = dt.datetime(1, 1, 1).now()
-        elapsedTime = self.now - self.zeroTime
-        time2 = elapsedTime.strftime('%H:%M:%S')
+        self.elapsedTime = self.now - self.zeroTime
+        time2 = self.elapsedTime.strftime('%H:%M:%S')
         if time2 != self.lastTime:
             self.lastTime = time2
-            self.b1.config(text=time2)
-            self.b2.config(text=self.now.strftime('%I:%M:%S'))
+            self.b_restart.config(text=time2)
+            self.b_quit.config(text=self.now.strftime('%I:%M:%S'))
         self.after(20, self.tick)
 
     def write(self):
         g=time.localtime()
         Datename = dt.datetime(1,1,1).now().strftime('%Y%m%d')
         my_Time = dt.timedelta(hours=g[3], minutes=g[4], seconds=g[5])
+        fractional_day = self.time_str_to_d_day(self.lastTime)
+        """
+        print( str(Datename),", ",end="")
+        print( str(self.zeroTime),", ",end="")
+        print( str(my_Time),", ",end="")
+        print( str(self.lastTime),", ",end="")
+        print( str(fractional_day),", ",end="")
+        print( str(self.message))
+        """
         filename = my_path + Datename +"_" + my_file + ".csv"
-        print( filename)
         file =open(filename, 'a' )
         file.write('\n')
         file.write(str(Datename))
@@ -111,15 +104,20 @@ class TimeClock(Frame):
         file.write(', ')
         file.write((self.lastTime))
         file.write(', ')
-        file.write(self.time_str_to_d_day( self.lastTime )) ## default time format on csv/spreadsheet
+        file.write( fractional_day)  ## default time format on csv/spreadsheet
         file.write( ', ')
         file.write(str(self.message))
         #file.write('\n')        
         file.close()
-        self.start_timer()
-
+        self.restart()
+    
+    def restart(self):
+        root.title("              ")
+        self.destroy()
+        frame = TimeClock(root,bg='purple')
     
     def quit(self):
+        self.message="quit"
         self.write()
         root.destroy()
 
@@ -127,7 +125,7 @@ class TimeClock(Frame):
 if __name__ == "__main__":
     root = Tk()
     root.title("TimeKeeper")
-    root.iconphoto(True, PhotoImage(file="/home/jbp/Documents/myPythonStuff/tk-time/timeKeeper.png"))
+    root.iconphoto(True, PhotoImage(file="timeKeeper.png"))
     frame = TimeClock(root,bg='purple') 
     frame.pack( expand='false', fill ='both')
     root.mainloop()
