@@ -11,8 +11,9 @@ import sys
 import time
 import datetime as dt
 
-my_path=""
-my_file="timekeeper"
+my_path="/home/jbp/Dropbox/Past_Rx/"
+my_file="timeKeeper"
+my_job="PastRx"
 
 
 class TimeClock(Frame):
@@ -83,6 +84,7 @@ class TimeClock(Frame):
     def write(self):
         g=time.localtime()
         Datename = dt.datetime(1,1,1).now().strftime('%Y%m%d')
+        Filename = dt.datetime(1,1,1).now().strftime('week-%W_%Y')
         my_Time = dt.timedelta(hours=g[3], minutes=g[4], seconds=g[5])
         fractional_day = self.time_str_to_d_day(self.lastTime)
         """
@@ -93,7 +95,7 @@ class TimeClock(Frame):
         print( str(fractional_day),", ",end="")
         print( str(self.message))
         """
-        filename = my_path + Datename +"_" + my_file + ".csv"
+        filename = my_path + Filename +"_"+ my_job +"_"+ my_file + ".csv"
         file =open(filename, 'a' )
         file.write('\n')
         file.write(str(Datename))
@@ -125,7 +127,7 @@ class TimeClock(Frame):
 if __name__ == "__main__":
     root = Tk()
     root.title("TimeKeeper")
-    root.iconphoto(True, PhotoImage(file="timeKeeper.png"))
+    root.iconphoto(True, PhotoImage(file="/home/jbp/bin/timekeeper.png"))
     frame = TimeClock(root,bg='purple') 
     frame.pack( expand='false', fill ='both')
     root.mainloop()
