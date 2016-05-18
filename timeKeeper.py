@@ -1,8 +1,8 @@
 #! /usr/bin/python3
 """
 Timekeeper:  a stop-watch style program program  that records and 
-annotates sequentcial time slices  into a date labled ,
-coma seperated variable (.CSV)file whose values can be manipulated 
+annotates sequentcial time slices  into a weekly, date labled,
+coma seperated variable (.CSV) file whose values can be manipulated 
 in a spreadsheet
 """
 
@@ -47,7 +47,7 @@ class TimeClock(Frame):
         self.start_timer()
 
 
-    def time_str_to_d_day( self, T_string):
+    def time_str_to_f_day( self, T_string): ## fractional_day 
         try:
             hours, minutes,seconds = T_string.split(':')
         except ValueError:
@@ -68,7 +68,7 @@ class TimeClock(Frame):
                         command=callback)
         self.b_start.pack()
         t=time.localtime()
-        self.zeroTime = dt.timedelta(hours=t[3], minutes=t[4], seconds=t[5])
+        self.zeroTime = dt.timedelta(hours = t[3], minutes = t[4], seconds = t[5] )
         self.tick()
         
     def tick(self):
@@ -86,7 +86,7 @@ class TimeClock(Frame):
         Datename = dt.datetime(1,1,1).now().strftime('%Y%m%d')
         Filename = dt.datetime(1,1,1).now().strftime('week-%W_%Y')
         my_Time = dt.timedelta(hours=g[3], minutes=g[4], seconds=g[5])
-        fractional_day = self.time_str_to_d_day(self.lastTime)
+        fractional_day = self.time_str_to_f_day(self.lastTime)
         """
         print( str(Datename),", ",end="")
         print( str(self.zeroTime),", ",end="")
