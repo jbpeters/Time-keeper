@@ -119,7 +119,7 @@ class TimeClock(Frame):
         frame = TimeClock(root,bg='purple')
     
     def quit(self):
-        self.message="quit"
+        self.message="End of Day"
         self.write()
         root.destroy()
 
